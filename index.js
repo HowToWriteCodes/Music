@@ -1,12 +1,12 @@
 const { Client, Collection, Intents } = require(`discord.js`);
-const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_VOICE_STATES, Intents.FLAGS.GUILD_MESSAGES] });
+const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_VOICE_STATES, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS] });
 const { readdirSync } = require(`fs`);
 const { Manager } = require(`erela.js`);
 const secrets = require(`./config.json`);
 client.commands = new Collection();
 
 
-/@PULLING COMMANDS/
+//PULLING COMMANDS
 try {
     readdirSync("./commands").forEach((dir) => {
         const commands = readdirSync(`./commands/${dir}/`).filter((file) => file.endsWith(".js"));
@@ -21,7 +21,7 @@ try {
 } catch (er) {
     console.log("Error: " + er);
 }
-/@PULLING COMMANDS/
+//PULLING COMMANDS
 
 const nodes = [{
     host: "Lavalink.officialnikhil.repl.co",
