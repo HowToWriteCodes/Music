@@ -8,7 +8,6 @@ module.exports = {
         if (!channel) return message.channel.send("Join a voice channel first");
         if (!args.length) return message.channel.send("Please provide URL or a name to search");
 
-
         /*@DETECTING PLAYER*/
         var player = client.manager.players.get(message.guild.id);
 
@@ -21,8 +20,10 @@ module.exports = {
             });
         }
 
-
         if (player && player.node && !player.node.connected) await player.node.connect();
+
+        if (channel.id !== player.voiceChannel) return message.channel.send("You need to join the same voice channel")
+
 
 
         const search = args.join(' ');
@@ -32,13 +33,19 @@ module.exports = {
             res = await player.search(search, message.author)
             switch (res.loadType) {
                 case 'LOAD_FAILED':
+                    player.destroy();
                     throw res.exception;
 
                 case 'TRACK_LOADED':
                     qsong();
                     return;
+
                 case 'PLAYLIST_LOADED':
                     qplaylist();
+                    return;
+
+                case 'SEARCH_RESULT':
+                    qsearch();
                     return;
             }
         } catch (er) {
@@ -70,7 +77,7 @@ module.exports = {
             } else {
                 player.queue.add(res.tracks[0]);
             }
-            message.channel.send("Queued" + "`" + `${res.tracks[0].title}` + "`");
+            message.channel.send("Queued " + "`" + `${res.tracks[0].title}` + "`");
         }
 
 
@@ -96,7 +103,37 @@ module.exports = {
             } else {
                 player.queue.add(res.tracks);
             }
-            message.channel.send("Queued" + "`" + `${res.playlist.name}` + "`" + "containing" + "`" + `${res.tracks.length} songs` + "`");
+            message.channel.send("Queued " + "`" + `${res.playlist.name}` + "`" + " containing " + "`" + `${res.tracks.length} songs` + "`");
+        }
+
+        //SEARCHING SONG
+        async function qsearch() {
+            const results = res.tracks.slice(0, 1);
+
+            if (!res.tracks[0]) {
+                return message.channel.send("Unable to find the requested song").then(msg => {
+                    setTimeout(() => {
+                        msg.delete().catch(() => {})
+                    }, 3000)
+                })
+
+            }
+
+            if (player.state !== "CONNECTED") {
+                player.set("message", message);
+                player.set("author", message.author);
+                player.connect();
+                player.queue.add(res.tracks[0]);
+                player.play();
+                player.pause(false);
+            } else if (!player.queue || !player.queue.current) {
+                player.queue.add(res.tracks[0]);
+                player.play();
+                player.pause(false);
+            } else {
+                player.queue.add(res.tracks[0]);
+            }
+            message.channel.send("Queued " + "`" + `${res.tracks[0].title}` + "`");
         }
     }
 }
