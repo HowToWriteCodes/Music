@@ -32,6 +32,7 @@ const nodes = [{
 
 client.manager = new Manager({
         nodes,
+        autoPlay: true,
         send: (id, payload) => {
             const guild = client.guilds.cache.get(id);
             if (guild)
