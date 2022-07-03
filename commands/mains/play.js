@@ -77,7 +77,7 @@ module.exports = {
             } else {
                 player.queue.add(res.tracks[0]);
             }
-            message.channel.send("Queued " + "`" + `${res.tracks[0].title}` + "`");
+            message.channel.send(`Queued \`${res.tracks[0].title}\``);
         }
 
 
@@ -103,7 +103,7 @@ module.exports = {
             } else {
                 player.queue.add(res.tracks);
             }
-            message.channel.send("Queued " + "`" + `${res.playlist.name}` + "`" + " containing " + "`" + `${res.tracks.length} songs` + "`");
+            message.channel.send(`Queued \`${res.playlist.name}\` containing \`${res.tracks.length}\` songs`);
         }
 
         //SEARCHING SONG
@@ -133,7 +133,7 @@ module.exports = {
             } else {
                 player.queue.add(res.tracks[0]);
             }
-            message.channel.send("Queued " + "`" + `${res.tracks[0].title}` + "`");
+            message.channel.send(`Queued \`${res.tracks[0].title}\``);
         }
     }
 }

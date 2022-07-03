@@ -2,6 +2,12 @@ module.exports = {
     name: "eval",
 
     run: async(client, message, args) => {
-        message.reply("Result: " + eval(args.join(" ")));
+
+        try {
+            var res = eval(args.join(" "))
+            message.channel.send(`Result:\n \`\`\`${res}\`\`\` \n Type: \`\`\`${typeof res}\`\`\``)
+        } catch (er) {
+            console.log(er);
+        }
     }
 }

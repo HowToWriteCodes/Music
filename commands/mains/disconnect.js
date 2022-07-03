@@ -1,6 +1,6 @@
 module.exports = {
-    name: `stop`,
-    usage: `[prefix]stop`,
+    name: `disconnect`,
+    usage: `[prefix]disconnect`,
     description: `Used to destroy the player`,
 
     run: async(client, message, args) => {
@@ -14,7 +14,7 @@ module.exports = {
         if (channel.id !== player.voiceChannel) return message.channel.send("Join the same voice channel")
 
         player.destroy();
-        message.channel.send("Stopped");
+        message.channel.send("Disconnected");
 
     }
 }

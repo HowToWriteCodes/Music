@@ -42,6 +42,7 @@ client.manager = new Manager({
         console.log("Connected " + node.options.identifier);
     })
     .on("nodeError", (node, error) => {
+        console.log(error)
         console.log("An error occured " + node.options.identifier);
     })
 
